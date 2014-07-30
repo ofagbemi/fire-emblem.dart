@@ -1,0 +1,8 @@
+name: fire_emblem
+description: A sample web application
+dependencies:
+  browser: any
+  mapper:
+    path: ../mapper
+  unit:
+    path: ../unit

@@ -1,0 +1,6 @@
+name: unit
+description: Package for FE units
+dependencies:
+  unittest: any
+  mapper:
+    path: ../mapper.dart

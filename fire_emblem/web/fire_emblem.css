@@ -1,0 +1,25 @@
+.container {
+  position: relative;
+}
+
+.container canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#map {
+  z-index: 0;
+}
+
+#range {
+  z-index: 1
+}
+
+#overworld {
+  z-index: 2;
+}
+
+.spritesheet {
+  display: none;
+}

@@ -1,0 +1,4 @@
+name: mapper
+description: Provides a set of classes for drawing tile maps onto an HTML5 canavs
+dependencies:
+  unittest: any

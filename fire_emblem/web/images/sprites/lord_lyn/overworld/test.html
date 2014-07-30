@@ -1,0 +1,23 @@
+<canvas id="canvas" width="500px" height="300px"></canvas>
+
+<script>
+var img = document.createElement('img');
+img.src='right.png';
+var canvas = document.getElementById('canvas');
+img.onload = function(e) {
+  var context = canvas.getContext('2d');
+  var current = 0;
+  var step = 0;
+  setInterval(function() {
+    context.clearRect(0, 0, 128, 128);
+    context.drawImage(img, current * 128, 0, 128, 128, 0, 0, 64, 64);
+    step = (step+1)%40;
+    if(step < 10) current = 0;
+    else if(step < 20) current = 1;
+    else if(step < 30) current = 2;
+    else current = 3;
+    
+  }, 1000/60);
+};
+
+</script>

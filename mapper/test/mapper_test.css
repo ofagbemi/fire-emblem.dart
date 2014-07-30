@@ -1,0 +1,12 @@
+body {
+  font-family: sans-serif;
+}
+
+canvas {
+  border: solid 1px black;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: 400;
+}
