@@ -320,8 +320,6 @@ class Entity {
   void move({void onDone()}) {
     if(!canMove || currentPath == null) return;
 
-
-
     if(dest == null || (x==dest.x && y == dest.y)) {
       dest = currentPath.next();
 
@@ -331,7 +329,6 @@ class Entity {
         if(onDone != null) {
           onDone();
         }
-
         // map.getTileXY(currentTile.x~/1, currentTile.y~/1).properties['unit'] = this;
         return;
       }
@@ -471,6 +468,7 @@ class Entity {
    * renders this unit at its current x and y values.
    */
   void drawSelfAtTile(Mapper map, CanvasRenderingContext2D context) {
+    if(!visible) return;
     currentSprite.drawSelf(context, x ~/ 1, y ~/ 1,
                            map.renderWidth, map.renderHeight);
   }
