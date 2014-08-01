@@ -3,7 +3,7 @@
 packages:
   mapper:
     description:
-      path: "../mapper.dart"
+      path: "../mapper"
       relative: true
     source: path
     version: "0.0.0"
