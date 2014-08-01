@@ -522,8 +522,6 @@ class Entity {
       currentPath.add(p);
     }
   }
-
-
 }
 
 class Unit extends Entity {
