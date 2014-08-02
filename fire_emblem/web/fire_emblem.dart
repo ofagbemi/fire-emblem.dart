@@ -55,24 +55,30 @@ void main() {
         cursor.right();
         break;
       case KeyCode.X:
-        switch(ch.gameState) {
+        switch(ch.gameState.state) {
           case MOVING_UNIT:
             var tile = selectedUnit.currentTilePointRounded;
             ch.cursor.setTile(tile.x, tile.y);
             selectedUnit.setSprite('overworld', 'active');
             selectedUnit = null;
             ch.map.clearRange();
-            ch.gameState = ON_MAP;
+            ch.gameState = new GameState.onMap(
+                cursorPosition: cursor.currentTilePointRounded
+            );
             break;
           case MOVED_UNIT:
             cursor.unlock();
             cursor.visible = true;
-            cursor.setTile(0, 0);
-            selectedUnit.setTile(0, 0);
+
+            var from = ch.gameState.properties['from'];
+
+            cursor.setTile(from.x, from.y);
+            selectedUnit.setTile(from.x, from.y);
+
             selectedUnit.setSprite('overworld', 'down');
             ch.map.drawRange(selectedUnit.getRange());
 
-            ch.gameState = MOVING_UNIT;
+            ch.gameState = new GameState.movingUnit();
             break;
         }
         break;
@@ -81,14 +87,18 @@ void main() {
           // check if unit can move to this spot
           if(true) {
 
-            ch.gameState = MOVED_UNIT;
+            var fromTilePoint = selectedUnit.currentTilePointRounded;
+            var toTilePoint = cursor.currentTilePointRounded;
+
+            ch.gameState = new GameState.movedUnit(
+                from: fromTilePoint, to: toTilePoint
+            );
 
             ch.cursor.lock();
             ch.cursor.visible = false;
             ch.map.clearRange();
             selectedUnit.currentPath = ch.map.getPathToTile(
-                selectedUnit.currentTilePointRounded,
-                cursor.currentTilePointRounded,
+                fromTilePoint, toTilePoint,
                 filter: selectedUnit.stats['move']
             );
           }
@@ -99,7 +109,7 @@ void main() {
             selectedUnit.setSprite('overworld', 'down');
             ch.map.drawRange(selectedUnit.getRange());
 
-            ch.gameState = MOVING_UNIT;
+            ch.gameState = new GameState.movingUnit();;
           }
         }
         break;

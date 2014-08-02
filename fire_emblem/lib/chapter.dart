@@ -3,13 +3,15 @@ library chapter;
 import 'package:mapper/mapper.dart';
 import 'package:unit/unit.dart';
 
+import 'package:fire_emblem/game_state.dart';
+
 import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
 
 class Chapter {
 
-  String gameState;
+  GameState gameState;
 
   // map from src url to the image element
   Map _loadedImages = {};
