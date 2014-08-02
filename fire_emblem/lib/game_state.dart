@@ -1,5 +1,7 @@
 library game_state;
 
+import 'package:unit/unit.dart';
+
 import 'dart:math';
 
 const String ON_MAP = 'on map';
@@ -19,17 +21,17 @@ class GameState {
     );
   }
 
-  factory GameState.movingUnit() {
+  factory GameState.movingUnit({Unit unit, Point from}) {
     return new GameState(
         MOVING_UNIT,
-        {}
+        {'unit': unit, 'from': from}
     );
   }
 
-  factory GameState.movedUnit({Point from, Point to}) {
+  factory GameState.movedUnit({Unit unit, Point from, Point to}) {
     return new GameState(
         MOVED_UNIT,
-        {'from': from, 'to': to}
+        {'unit': unit, 'from': from, 'to': to}
     );
   }
 }

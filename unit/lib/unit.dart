@@ -537,7 +537,7 @@ class Unit extends Entity {
    * Sets this entity's location to the tile at x, y. For
    * example
    *
-   *     unit(4, 7.8);
+   *     unit.setTile(4, 7.8);
    *
    * sets the entity's location to the tile at (4, 7.8). Note
    * that the function can take continuous values. This is
@@ -552,6 +552,7 @@ class Unit extends Entity {
     super.setTile(x, y);
     currentTile.properties['unit'] = this;
   }
+
 
   Set<Point> getRange() {
     Set<Point> points = new Set<Point>();
@@ -600,6 +601,7 @@ class Unit extends Entity {
       }
     }
   }
+
 
   void move({void onDone()}) {
     super.move(

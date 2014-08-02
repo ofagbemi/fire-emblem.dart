@@ -23,6 +23,8 @@ class Chapter {
   List<Entity> entities =[];
   List<Unit> units = [];
 
+  Unit selectedUnit;
+
   bool loaded = false;
 
   // needed for constructor
@@ -53,6 +55,60 @@ class Chapter {
         new Duration(milliseconds: (1000~/f)),
         updateFn
     );
+  }
+
+  void setState(GameState gameState) {
+    switch(gameState.state) {
+      case MOVING_UNIT:
+        Unit unit = gameState.properties['unit'];
+        selectedUnit = unit;
+        unit.selected = true;
+
+        var from = gameState.properties['from'];
+
+        unit.setSprite('overworld', 'down');
+        unit.setTile(from.x, from.y);
+        cursor.setTile(from.x, from.y);
+        cursor.visible = true;
+        cursor.unlock();
+
+        map.drawRange(unit.getRange());
+
+        this.gameState = new GameState.movingUnit(
+            unit: unit,
+            from: from
+        );
+        break;
+      case MOVED_UNIT:
+        Unit unit = gameState.properties['unit'];
+        selectedUnit = unit;
+        unit.selected = true;
+
+        var from = gameState.properties['from'];
+        var to = gameState.properties['to'];
+
+        map.clearRange();
+
+        cursor.lock();
+        cursor.visible = false;
+
+        unit.currentPath = map.getPathToTile(
+            from, to,
+            filter: selectedUnit.stats['move']
+        );
+
+        this.gameState = new GameState.movedUnit(unit: unit, from: from, to: to);
+
+        /*
+                ch.cursor.lock();
+                ch.cursor.visible = false;
+                ch.map.clearRange();
+                ch.selectedUnit.currentPath = ch.map.getPathToTile(
+                    fromTilePoint, toTilePoint,
+                    filter: ch.selectedUnit.stats['move']
+                );*/
+        break;
+    }
   }
 
   Unit getUnitAtTile(Point p) {

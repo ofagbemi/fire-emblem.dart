@@ -52,59 +52,51 @@ void main() {
       case KeyCode.X:
         switch(ch.gameState.state) {
           case MOVING_UNIT:
-            var tile = selectedUnit.currentTilePointRounded;
+            var tile = ch.selectedUnit.currentTilePointRounded;
             ch.cursor.setTile(tile.x, tile.y);
-            selectedUnit.setSprite('overworld', 'active');
-            selectedUnit = null;
+            ch.selectedUnit.setSprite('overworld', 'active');
+            ch.selectedUnit = null;
             ch.map.clearRange();
             ch.gameState = new GameState.onMap(
                 cursorPosition: cursor.currentTilePointRounded
             );
             break;
           case MOVED_UNIT:
-            cursor.unlock();
-            cursor.visible = true;
-
+            // set state to moving unit
+            Unit unit = ch.gameState.properties['unit'];
             var from = ch.gameState.properties['from'];
-
-            cursor.setTile(from.x, from.y);
-            selectedUnit.setTile(from.x, from.y);
-
-            selectedUnit.setSprite('overworld', 'down');
-            ch.map.drawRange(selectedUnit.getRange());
-
-            ch.gameState = new GameState.movingUnit();
+            var gameState = new GameState.movingUnit(
+                unit: unit,
+                from: from
+            );
+            ch.setState(gameState);
             break;
         }
         break;
       case KeyCode.Z:
-        if(selectedUnit != null) {
+        if(ch.selectedUnit != null) {
           // check if unit can move to this spot
-          if(true) {
-
-            var fromTilePoint = selectedUnit.currentTilePointRounded;
+          if(1 == 1) {
+            // set state to moved unit
+            var fromTilePoint = ch.selectedUnit.currentTilePointRounded;
             var toTilePoint = cursor.currentTilePointRounded;
-
-            ch.gameState = new GameState.movedUnit(
-                from: fromTilePoint, to: toTilePoint
+            var gameState = new GameState.movedUnit(
+                from: fromTilePoint, to: toTilePoint,
+                unit: ch.selectedUnit
             );
-
-            ch.cursor.lock();
-            ch.cursor.visible = false;
-            ch.map.clearRange();
-            selectedUnit.currentPath = ch.map.getPathToTile(
-                fromTilePoint, toTilePoint,
-                filter: selectedUnit.stats['move']
-            );
+            ch.setState(gameState);
+          } else {
+            // play sound and block movement
           }
         } else {
-          selectedUnit = getUnitAtTile(cursor.currentTilePointRounded);
-          if(selectedUnit != null) {
-            selectedUnit.selected = true;
-            selectedUnit.setSprite('overworld', 'down');
-            ch.map.drawRange(selectedUnit.getRange());
-
-            ch.gameState = new GameState.movingUnit();;
+          Unit unit = ch.getUnitAtTile(cursor.currentTilePoint);
+          if(unit != null) { // TODO: check if the unit can still move
+            // set state to moving unit
+            var gameState = new GameState.movingUnit(
+                unit: unit,
+                from: unit.currentTilePointRounded
+            );
+            ch.setState(gameState);
           }
         }
         break;
