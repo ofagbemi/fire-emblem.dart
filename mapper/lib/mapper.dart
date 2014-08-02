@@ -275,6 +275,11 @@ class Mapper {
     context.fill();
   }
 
+  void clearRange() {
+    rangeCanvas.context2D
+      .clearRect(0, 0, rangeCanvas.width, rangeCanvas.height);
+  }
+
   TilePath getPathToTile(Point start, Point end, {int filter}) {
     // TODO yeah
     return new TilePath(this,

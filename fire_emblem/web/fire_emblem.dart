@@ -2,6 +2,7 @@ import 'package:mapper/mapper.dart';
 import 'package:unit/unit.dart';
 
 import 'package:fire_emblem/chapter.dart';
+import 'package:fire_emblem/game_state.dart';
 
 import 'dart:html';
 import 'dart:async';
@@ -43,9 +44,6 @@ void main() {
     switch(e.keyCode) {
       case KeyCode.UP:
         cursor.up();
-
-        // ch.up();  // TODO
-
         break;
       case KeyCode.DOWN:
         cursor.down();
@@ -56,20 +54,52 @@ void main() {
       case KeyCode.RIGHT:
         cursor.right();
         break;
+      case KeyCode.X:
+        switch(ch.gameState) {
+          case MOVING_UNIT:
+            var tile = selectedUnit.currentTilePointRounded;
+            ch.cursor.setTile(tile.x, tile.y);
+            selectedUnit.setSprite('overworld', 'active');
+            selectedUnit = null;
+            ch.map.clearRange();
+            ch.gameState = ON_MAP;
+            break;
+          case MOVED_UNIT:
+            cursor.unlock();
+            cursor.visible = true;
+            cursor.setTile(0, 0);
+            selectedUnit.setTile(0, 0);
+            selectedUnit.setSprite('overworld', 'down');
+            ch.map.drawRange(selectedUnit.getRange());
+
+            ch.gameState = MOVING_UNIT;
+            break;
+        }
+        break;
       case KeyCode.Z:
         if(selectedUnit != null) {
-          ch.cursor.lock();
-          selectedUnit.currentPath = ch.map.getPathToTile(
-              selectedUnit.currentTilePointRounded,
-              cursor.currentTilePointRounded,
-              filter: selectedUnit.stats['move']
-          );
+          // check if unit can move to this spot
+          if(true) {
+
+            ch.gameState = MOVED_UNIT;
+
+            ch.cursor.lock();
+            ch.cursor.visible = false;
+            ch.map.clearRange();
+            selectedUnit.currentPath = ch.map.getPathToTile(
+                selectedUnit.currentTilePointRounded,
+                cursor.currentTilePointRounded,
+                filter: selectedUnit.stats['move']
+            );
+          }
         } else {
           selectedUnit = getUnitAtTile(cursor.currentTilePointRounded);
           if(selectedUnit != null) {
             selectedUnit.selected = true;
             selectedUnit.setSprite('overworld', 'down');
             ch.map.drawRange(selectedUnit.getRange());
+
+            ch.gameState = MOVING_UNIT;
           }
         }
         break;
@@ -83,10 +113,9 @@ void main() {
     if(ch.map != null) ch.map.drawSelf();
 
     ch.overworldCanvas.context2D.clearRect(0, 0, overworldCanvas.width, overworldCanvas.height);
+
     ch.entities.forEach((u) {
-      u.move(onDone: () {
-        u.setSprite('overworld', 'down');
-      });
+      u.move(onDone: () {});
       u.currentSprite.setAnimationFrame(frame);
       u.drawSelfAtTile(ch.map, ch.overworldCanvas.context2D);
     });

@@ -1,3 +1,5 @@
+library chapter;
+
 import 'package:mapper/mapper.dart';
 import 'package:unit/unit.dart';
 
@@ -6,6 +8,8 @@ import 'dart:convert';
 import 'dart:async';
 
 class Chapter {
+
+  String gameState;
 
   // map from src url to the image element
   Map _loadedImages = {};
@@ -166,14 +170,19 @@ class Chapter {
           unitJSON['id'],
           'overworld'
       );
+
       Unit unit = new Unit(
           sprites: sprites,
           map: this.map,
           stats: unitJSON['stats']);
+
       unit.setTile(unitJSON['x'], unitJSON['y']);
+
       newUnits.add(unit);
       unit.setSprite('overworld', 'idle');
     });
+
+
     return newUnits;
   }
 
