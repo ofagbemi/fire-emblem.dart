@@ -255,6 +255,8 @@ class Direction {
 }
 
 class Entity {
+  dynamic id;
+
   Map<dynamic, Map<dynamic, Sprite>> sprites;
 
   Map<dynamic, num> stats;
@@ -291,7 +293,7 @@ class Entity {
     stats['movement_speed'] = val;
   }
 
-  Entity({this.sprites, this.map, this.stats}) {
+  Entity({this.id, this.sprites, this.map, this.stats}) {
     if(stats == null) {
       stats = {};
     }
@@ -526,8 +528,8 @@ class Unit extends Entity {
   List<Entity> inventory;
   bool selected = false;
 
-  Unit({sprites, map, stats, this.inventory}) :
-    super(sprites: sprites, map: map, stats: stats) {
+  Unit({id, sprites, map, stats, this.inventory}) :
+    super(id: id, sprites: sprites, map: map, stats: stats) {
 
   }
 

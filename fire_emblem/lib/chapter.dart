@@ -172,9 +172,11 @@ class Chapter {
       );
 
       Unit unit = new Unit(
+          id: unitJSON['id'],
           sprites: sprites,
           map: this.map,
-          stats: unitJSON['stats']);
+          stats: unitJSON['stats']
+      );
 
       unit.setTile(unitJSON['x'], unitJSON['y']);
 
