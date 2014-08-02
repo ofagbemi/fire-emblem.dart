@@ -92,7 +92,7 @@ class Chapter {
 
       Map<String, ImageElement> images = getImages(chapterJSON);
       querySelector('body').children.addAll(images.values);
-      var futures = [];
+      var futures = <Future<Event>>[];
       images.forEach((src, img) {
         futures.add(img.onLoad.first);
       });
@@ -163,8 +163,6 @@ class Chapter {
   }
 
   // Builds the units, does not load their spritesheets
-  // can optionally add URLs to an array to load the
-  // spritesheets later
   List<Unit> _loadUnits(List<Map> unitsJSON) {
     List<Unit> newUnits = [];
     unitsJSON.forEach((unitJSON) {
