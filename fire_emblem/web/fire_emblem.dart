@@ -34,11 +34,6 @@ void main() {
   );
   ch.loadChapter();
 
-  Unit getUnitAtTile(Point p) {
-    return ch.map.getTileXY(p.x, p.y).properties['unit'];
-  }
-
-  Unit selectedUnit;
   window.onKeyDown.listen((KeyboardEvent e) {
     var cursor = ch.cursor;
     switch(e.keyCode) {

@@ -55,6 +55,10 @@ class Chapter {
     );
   }
 
+  Unit getUnitAtTile(Point p) {
+    return map.getTileXY(p.x~/1, p.y~/1).properties['unit'];
+  }
+
   Map<String, ImageElement> getImages(Map chapterJSON) {
     Map<String, ImageElement> images = {};
     // get map tileset
