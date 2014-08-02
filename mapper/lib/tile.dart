@@ -22,6 +22,12 @@ class Tile {
     }
   }
 
+  factory Tile.from(Tile t) {
+    return new Tile(
+        new List<Point>.from(t.frames),
+        properties: new Map.from(t.properties));
+  }
+
   void drawSelf(CanvasRenderingContext2D context, Tileset tileset,
                 int x, int y, int width, int height,
                 int drawWidth, int drawHeight) {

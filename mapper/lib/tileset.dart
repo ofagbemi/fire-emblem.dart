@@ -27,7 +27,6 @@ class Tileset {
                           width, height);
   }
 
-
   /**
    * Returns a list of tiles constructed from the passed in parameters.
    *

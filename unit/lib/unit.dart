@@ -273,8 +273,8 @@ class Entity {
   Mapper map;
 
   // position, in pixels, of an entity
-  int x;
-  int y;
+  int x = 0;
+  int y = 0;
 
   lock() {
     canMove = false;
@@ -543,6 +543,10 @@ class Unit extends Entity {
    * tiles, though this isn't recommended, epecially for units.
    */
   void setTile(num x, num y) {
+
+    if(currentTile != null) {
+      currentTile.properties['unit'] = null;
+    }
     super.setTile(x, y);
     currentTile.properties['unit'] = this;
   }

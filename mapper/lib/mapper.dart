@@ -65,7 +65,7 @@ class Mapper {
         if(_indices[index] == null) {
           return null;
         } else {
-          return tileset.tiles[_indices[index]];
+          return new Tile.from(tileset.tiles[_indices[index]]);
         }
     });
   }
