@@ -39,27 +39,54 @@ void main() {
     switch(e.keyCode) {
       case KeyCode.UP:
         cursor.up();
+
+        if(ch.gameState.state == ON_MAP) {
+          var gameState = new GameState.onMap(
+              cursorPosition: cursor.currentTilePointRounded
+          );
+          ch.setState(gameState);
+        }
         break;
       case KeyCode.DOWN:
         cursor.down();
+
+        if(ch.gameState.state == ON_MAP) {
+          var gameState = new GameState.onMap(
+              cursorPosition: cursor.currentTilePointRounded
+          );
+          ch.setState(gameState);
+        }
         break;
       case KeyCode.LEFT:
         cursor.left();
+
+        if(ch.gameState.state == ON_MAP) {
+          var gameState = new GameState.onMap(
+              cursorPosition: cursor.currentTilePointRounded
+          );
+          ch.setState(gameState);
+        }
         break;
       case KeyCode.RIGHT:
         cursor.right();
+
+        if(ch.gameState.state == ON_MAP) {
+          var gameState = new GameState.onMap(
+              cursorPosition: cursor.currentTilePointRounded
+          );
+          ch.setState(gameState);
+        }
         break;
+
       case KeyCode.X:
+        // 'B' button
         switch(ch.gameState.state) {
           case MOVING_UNIT:
-            var tile = ch.selectedUnit.currentTilePointRounded;
-            ch.cursor.setTile(tile.x, tile.y);
-            ch.selectedUnit.setSprite('overworld', 'active');
-            ch.selectedUnit = null;
-            ch.map.clearRange();
-            ch.gameState = new GameState.onMap(
+            var gameState = new GameState.onMap(
                 cursorPosition: cursor.currentTilePointRounded
             );
+            ch.setState(gameState);
+
             break;
           case MOVED_UNIT:
             // set state to moving unit
@@ -75,8 +102,8 @@ void main() {
         break;
       case KeyCode.Z:
         if(ch.selectedUnit != null) {
-          // check if unit can move to this spot
-          if(1 == 1) {
+          // TODO: check if unit can move to this spot
+          if(true && ch.gameState.state != MOVED_UNIT) {
             // set state to moved unit
             var fromTilePoint = ch.selectedUnit.currentTilePointRounded;
             var toTilePoint = cursor.currentTilePointRounded;
@@ -86,7 +113,7 @@ void main() {
             );
             ch.setState(gameState);
           } else {
-            // play sound and block movement
+            // TODO: play sound and block movement
           }
         } else {
           Unit unit = ch.getUnitAtTile(cursor.currentTilePoint);

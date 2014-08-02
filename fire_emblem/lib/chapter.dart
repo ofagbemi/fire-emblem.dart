@@ -59,6 +59,23 @@ class Chapter {
 
   void setState(GameState gameState) {
     switch(gameState.state) {
+      case ON_MAP:
+        Point cursorPosition;
+        if(selectedUnit != null) {
+          cursorPosition = selectedUnit.currentTilePointRounded;
+
+          selectedUnit.selected = false;
+          selectedUnit.setSprite('overworld', 'active');
+          selectedUnit = null;
+        } else {
+          cursorPosition = gameState.properties['cursorPosition'];
+        }
+
+        cursor.setTile(cursorPosition.x, cursorPosition.y);
+        map.clearRange();
+        gameState = new GameState.onMap(cursorPosition: cursorPosition);
+        break;
+
       case MOVING_UNIT:
         Unit unit = gameState.properties['unit'];
         selectedUnit = unit;
