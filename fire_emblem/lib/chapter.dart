@@ -59,6 +59,10 @@ class Chapter {
     );
   }
 
+  /**
+   * Sets the chapter to one of the states defined in
+   * game_state.dart.
+   */
   void setState(GameState gameState) {
     switch(gameState.state) {
       case ON_MAP:
@@ -115,17 +119,7 @@ class Chapter {
             from, to,
             filter: selectedUnit.stats['move']
         );
-
         this.gameState = new GameState.movedUnit(unit: unit, from: from, to: to);
-
-        /*
-                ch.cursor.lock();
-                ch.cursor.visible = false;
-                ch.map.clearRange();
-                ch.selectedUnit.currentPath = ch.map.getPathToTile(
-                    fromTilePoint, toTilePoint,
-                    filter: ch.selectedUnit.stats['move']
-                );*/
         break;
     }
   }
