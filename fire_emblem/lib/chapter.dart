@@ -5,6 +5,8 @@ import 'package:unit/unit.dart';
 
 import 'package:fire_emblem/game_state.dart';
 
+import 'package:fire_emblem/cursor.dart';
+
 import 'dart:html';
 import 'dart:convert';
 import 'dart:async';
@@ -19,7 +21,7 @@ class Chapter {
   String url;
 
   Mapper map;
-  Entity cursor;
+  Cursor cursor;
   List<Entity> entities =[];
   List<Unit> units = [];
 
@@ -194,7 +196,7 @@ class Chapter {
     });
   }
 
-  Entity _loadCursor(Map chapterJSON) {
+  Cursor _loadCursor(Map chapterJSON) {
     var cursorJSON = AnimationData.data['overworld']['misc']['cursor'];
 
     String src = 'images/sprites/cursor/' +
@@ -215,7 +217,7 @@ class Chapter {
     sprites['overworld'] = {};
     sprites['overworld']['cursor'] = sprite;
 
-    return new Entity(sprites: sprites, map: map)
+    return new Cursor(sprites: sprites, map: map)
       ..setSprite('overworld', 'cursor')
       ..speed = 0.5
       ..setTile(
