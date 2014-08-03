@@ -1,6 +1,8 @@
 import 'package:mapper/mapper.dart';
 import 'package:unit/unit.dart';
 
+import 'package:fire_emblem/cursor.dart';
+
 import 'package:fire_emblem/chapter.dart';
 import 'package:fire_emblem/game_state.dart';
 
@@ -34,45 +36,62 @@ void main() {
   );
   ch.loadChapter();
 
+
+  Unit overUnit;
+  // set selected unit on cursor move event
+  window.on[CURSOR_MOVE_EVENT].listen((CustomEvent e) {
+    var newOverUnit = ch.getUnitAtTile(e.detail['to']);
+    print('$newOverUnit from ${e.detail['from']} to ${e.detail['to']}');
+    if(overUnit != null && newOverUnit != overUnit) {
+      overUnit.setSprite('overworld', 'idle');
+    } else if(newOverUnit != null) {
+      overUnit = newOverUnit;
+      overUnit.setSprite('overworld', 'active');
+    }
+  });
+
   window.onKeyDown.listen((KeyboardEvent e) {
     var cursor = ch.cursor;
     switch(e.keyCode) {
       case KeyCode.UP:
-        cursor.up();
+        var to = cursor.up();
 
         if(ch.gameState.state == ON_MAP) {
           var gameState = new GameState.onMap(
-              cursorPosition: cursor.currentTilePointRounded
+              cursorPosition: to
           );
           ch.setState(gameState);
         }
         break;
       case KeyCode.DOWN:
-        cursor.down();
+        Point<int> to = cursor.down();
+
+        // NOTE: double for some reason
+        // print(to.x.runtimeType);
 
         if(ch.gameState.state == ON_MAP) {
           var gameState = new GameState.onMap(
-              cursorPosition: cursor.currentTilePointRounded
+              cursorPosition: to
           );
           ch.setState(gameState);
         }
         break;
       case KeyCode.LEFT:
-        cursor.left();
+        var to = cursor.left();
 
         if(ch.gameState.state == ON_MAP) {
           var gameState = new GameState.onMap(
-              cursorPosition: cursor.currentTilePointRounded
+              cursorPosition: to
           );
           ch.setState(gameState);
         }
         break;
       case KeyCode.RIGHT:
-        cursor.right();
+        var to = cursor.right();
 
         if(ch.gameState.state == ON_MAP) {
           var gameState = new GameState.onMap(
-              cursorPosition: cursor.currentTilePointRounded
+              cursorPosition: to
           );
           ch.setState(gameState);
         }
@@ -145,5 +164,8 @@ void main() {
     });
     frame++;
   }
+
+  // initialize game state
+  ch.gameState = new GameState.onMap(cursorPosition: new Point(0, 0));
   ch.loop(60, update);
 }
