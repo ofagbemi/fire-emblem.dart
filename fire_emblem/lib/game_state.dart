@@ -14,21 +14,21 @@ class GameState {
 
   GameState(this.state, this.properties);
 
-  factory GameState.onMap({Point cursorPosition}) {
+  factory GameState.onMap({Point<int> cursorPosition}) {
     return new GameState(
         ON_MAP,
         {'cursorPosition': cursorPosition}
     );
   }
 
-  factory GameState.movingUnit({Unit unit, Point from}) {
+  factory GameState.movingUnit({Unit unit, Point<int> from}) {
     return new GameState(
         MOVING_UNIT,
         {'unit': unit, 'from': from}
     );
   }
 
-  factory GameState.movedUnit({Unit unit, Point from, Point to}) {
+  factory GameState.movedUnit({Unit unit, Point<int> from, Point<int> to}) {
     return new GameState(
         MOVED_UNIT,
         {'unit': unit, 'from': from, 'to': to}

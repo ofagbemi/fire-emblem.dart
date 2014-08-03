@@ -398,7 +398,7 @@ class Entity {
   num get currentTileY => y/map.renderHeight;
 
 
-  Point get currentTilePointRounded => new Point(
+  Point<int> get currentTilePointRounded => new Point(
       x~/map.renderWidth,
       y~/map.renderHeight
   );
@@ -430,16 +430,14 @@ class Entity {
    * Sets this entity's location to the tile at x, y. For
    * example
    *
-   *     entity.setTile(4, 7.8);
+   *     entity.setTile(4, 8);
    *
-   * sets the entity's location to the tile at (4, 7.8). Note
-   * that the function can take continuous values. This is
-   * to allow this function to animate movement between
-   * tiles.
+   * sets the entity's location to the tile at (4, 8).
    */
   void setTile(num x, num y) {
-    this.x = map.renderWidth * x;
-    this.y = map.renderHeight * y;
+    // get around Point<int> bug
+    this.x = map.renderWidth * (x~/1);
+    this.y = map.renderHeight * (y~/1);
   }
 
   /**
@@ -475,8 +473,8 @@ class Entity {
                            map.renderWidth, map.renderHeight);
   }
 
-  void up() {
-    Point p = new Point(
+  Point<int> up() {
+    Point<int> p = new Point(
       this.currentTilePoint.x,
       (this.currentTilePointRounded.y-1));
 
@@ -485,10 +483,11 @@ class Entity {
     } else {
       currentPath.add(p);
     }
+    return p;
   }
 
-  void down() {
-    Point p = new Point(
+  Point<int> down() {
+    Point<int> p = new Point(
       this.currentTilePoint.x,
       (this.currentTilePointRounded.y+1));
 
@@ -497,10 +496,11 @@ class Entity {
     } else {
       currentPath.add(p);
     }
+    return p;
   }
 
-  void left() {
-    Point p = new Point(
+  Point<int> left() {
+    Point<int> p = new Point(
       (this.currentTilePointRounded.x-1),
       this.currentTilePoint.y);
 
@@ -509,10 +509,11 @@ class Entity {
     } else {
       currentPath.add(p);
     }
+    return p;
   }
 
-  void right() {
-    Point p = new Point(
+  Point<int> right() {
+    Point<int> p = new Point(
       (this.currentTilePointRounded.x+1),
       this.currentTilePoint.y);
 
@@ -521,6 +522,7 @@ class Entity {
     } else {
       currentPath.add(p);
     }
+    return p;
   }
 }
 
@@ -529,9 +531,7 @@ class Unit extends Entity {
   bool selected = false;
 
   Unit({id, sprites, map, stats, this.inventory}) :
-    super(id: id, sprites: sprites, map: map, stats: stats) {
-
-  }
+    super(id: id, sprites: sprites, map: map, stats: stats);
 
   /**
    * Sets this entity's location to the tile at x, y. For
@@ -539,11 +539,9 @@ class Unit extends Entity {
    *
    *     unit.setTile(4, 7.8);
    *
-   * sets the entity's location to the tile at (4, 7.8). Note
-   * that the function can take continuous values. This is
-   * to allow this function to animate movement between
-   * tiles, though this isn't recommended, epecially for units.
+   * sets the entity's location to the tile at (4, 8).
    */
+  @override
   void setTile(num x, num y) {
 
     if(currentTile != null) {
@@ -569,7 +567,7 @@ class Unit extends Entity {
 
     if(movement == 0) return;
 
-    Point up = new Point(current.x, current.y-1);
+    Point<int> up = new Point(current.x, current.y-1);
     if(map.canMoveTo(up)) {
       int m = map.getTile(up).properties['move'];
       if(m <= movement) {
@@ -577,7 +575,7 @@ class Unit extends Entity {
       }
     }
 
-    Point left = new Point(current.x-1, current.y);
+    Point<int> left = new Point(current.x-1, current.y);
     if(map.canMoveTo(left)) {
       int m = map.getTile(left).properties['move'];
       if(m <= movement) {
@@ -585,7 +583,7 @@ class Unit extends Entity {
       }
     }
 
-    Point right = new Point(current.x+1, current.y);
+    Point<int> right = new Point(current.x+1, current.y);
     if(map.canMoveTo(right)) {
       int m = map.getTile(right).properties['move'];
       if(m <= movement) {
@@ -593,7 +591,7 @@ class Unit extends Entity {
       }
     }
 
-    Point down = new Point(current.x, current.y+1);
+    Point<int> down = new Point(current.x, current.y+1);
     if(map.canMoveTo(down)) {
       int m = map.getTile(down).properties['move'];
       if(m <= movement) {
