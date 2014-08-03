@@ -14,17 +14,22 @@ class TilePath {
   Point next() {
     if(points.isNotEmpty) {
       return points.removeFirst();
-    } else {
-      return null;
     }
+      return null;
   }
 
   Point peek() {
     if(points.isNotEmpty) {
       return new Point(points.first.x, points.first.y);
-    } else {
-      return null;
     }
+    return null;
+  }
+
+  Point last() {
+    if(points.isNotEmpty) {
+      return new Point(points.last.x, points.last.y);
+    }
+    return null;
   }
 
   void add(Point p) {
